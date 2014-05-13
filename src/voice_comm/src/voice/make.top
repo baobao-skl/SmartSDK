@@ -1,0 +1,15 @@
+TOP 			=	@TOP@
+SEDTOP 		=	$(subst /,\\/,$(TOP))
+BUILD_DIR =	..
+MAKEINC 	=	$(TOP)/src/voice/make.inc
+MAKETOP 	=	$(TOP)/src/voice/make.top
+
+include		$(MAKEINC)
+
+$(TARGETS): Makefile
+
+Makefile: $(MAKETOP)
+	echo "# automatic generated file; don't edit!" > $@; \
+	echo -n "# " >> $@; \
+	echo $(shell date) >> $@; \
+	cat $< | sed s/\@TOP\@/$(SEDTOP)/ | sed /^#/d >> $@

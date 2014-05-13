@@ -1,0 +1,31 @@
+﻿body {}
+.txtBox{ height:28px;width:100%;line-height:28px; border:inset solid #808080 1px; background:transparent 0 -110px repeat-x;font-size:14px; outline:none;}
+.txt {
+    height:28px;
+    color:darkgreen;
+    font-size:medium;
+    font-weight:700;
+}
+.music_td {
+    height:30px;
+    border:1px dashed red;
+    border-color:green;
+    border-top:none;
+    border-left:none;
+    border-right:none;
+}
+.music_table {
+    width:100%;
+    border:1px dashed red;
+    border-top-color:green;
+    border-left:none;
+    border-right:none;
+    border-bottom:none;
+}
+.music_button {
+    width:50px;
+    height:40px;
+}
+.tip {
+    color:blue;
+}

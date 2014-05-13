@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Content-Language" content="zh-cn" />
+    <title></title>
+    <script  type="text/javascript">
+        function getdata() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            } else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("wendu").value = xmlhttp.responseText.split(',')[0];
+                    document.getElementById("shidu").value = xmlhttp.responseText.split(',')[1];
+                }
+            }
+            xmlhttp.open("GET", "/action/GetData?"+ new Date(), true);
+            xmlhttp.send();
+            setTimeout("getdata()", 1000);
+        }
+    </script>
+</head>
+<body onload = "getdata()">
+    温湿度检测：<br />
+    当前温度:
+    <input id="wendu" style="font-size:24px;width:90px;border:none" type="text" name="tem" value="18.0;"/>℃    <br/><br/>当前湿度:    <input id="shidu" style="font-size:24px;width:90px;border:none" type="text" name="tem" value="18.0"/>H%
+</body>
+</html>

@@ -1,0 +1,16 @@
+CROSS 			= 
+CC					= 	arm-linux-gcc
+AR					= 	arm-linux-ar
+RANLIB1			=   arm-linux-ranlib
+
+ARFLAGS			=		ru
+
+
+ECHO_MKTOP 	=	@echo "MKTOP $@" ;
+
+__MAKELIB 		=	$(RM) $@; \
+								$(CROSS)$(AR) $(ARFLAGS) $@
+__RANLIB			=	$(CROSS)$(RANLIB1)
+
+MAKELIB				=	@echo "MAKELIB $@" ;$(__MAKELIB)
+RANLIB				= @echo "RANLIB	 $@" ;$(__RANLIB)

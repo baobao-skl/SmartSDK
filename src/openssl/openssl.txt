@@ -1,0 +1,1 @@
+sudo gcc -Wall server.c -o server -L../ssl/lib -I../ssl/include -lssl -lcrypto
