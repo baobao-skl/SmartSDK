@@ -101,10 +101,12 @@ int get_ntp_time(int sk, struct addrinfo *addr, struct ntp_packet *ret_time)
 	char data[NTP_PCK_LEN * 8] = {0};
 	int packet_len, data_len = addr->ai_addrlen, count = 0, result , i, re;
 	if(!(packet_len = construct_packet(data))){
+		printf("construct packet error!\n");
 		return 0;
 	}
 
 	if((result = sendto(sk,data,packet_len,0,addr->ai_addr,data_len)) < 0 ){
+		printf("send packet error!\n");
 		return -1;
 	}
 
@@ -170,11 +172,13 @@ int main()
 
 	rc = getaddrinfo(NTP_SERVER_IP, NTP_PORT_STR, &hints, &res);
 	if(rc != 0){
+		printf("dns parse error!\n");
 		return 1;
 	}
 
 	sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 	if(sockfd < 0){
+		printf("create socket error!\n");
 		return 1;
 	}
 
@@ -183,7 +187,11 @@ int main()
 		if(!set_local_time(&new_time_packet))
 		{
 			printf("ntp set time success!\n");
+		}else{
+			printf("ntp set time error!\n");
 		}
+	}else{
+		printf("get ntp time error!\n");
 	}
 	close(sockfd);
 	return 0;
