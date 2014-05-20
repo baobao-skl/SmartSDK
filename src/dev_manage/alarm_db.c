@@ -40,12 +40,6 @@ static BOOL database_open(void)
 	return TRUE;
 }
 
-static void CreateDatabaseTable(void)
-{
-	char *sql = "create table alarmtable(F_TYPE VARCHAR(30),F_VALUE VARCHAR(50),F_STATE VARCHAR(10));" ;
-	sqlite3_exec(db_user, sql,NULL,NULL,NULL);
-}
-
 /*
   * close database
   */
@@ -54,6 +48,14 @@ static void database_close(void)
 	if(db_user!=NULL)
 		sqlite3_close(db_user);
 }
+
+static void CreateDatabaseTable(void)
+{
+	char *sql = "create table alarmtable(F_TYPE VARCHAR(30),F_VALUE VARCHAR(50),F_STATE VARCHAR(10));" ;
+	sqlite3_exec(db_user, sql,NULL,NULL,NULL);
+}
+
+
 
 BOOL insertIntoAlarmTable(ALARM_TYPE type,const char *value)
 {
