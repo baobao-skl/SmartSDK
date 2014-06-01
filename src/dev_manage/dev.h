@@ -8,7 +8,7 @@
 #define FALSE 0
 
 
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
 	#define DEBUG_MSG printf
 #else

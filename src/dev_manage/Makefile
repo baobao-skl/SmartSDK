@@ -52,7 +52,7 @@ sqlite3:
 
 $(APP_BINARY):$(OBJECTS)
 	$(CC) $(CFLAGS) $(LFLAGS) $(OBJECTS) -o $(APP_BINARY); \
-	cp $(APP_BINARY) /work/nfs_root/rootfs/usr/bin
+	cp $(APP_BINARY) /home/linuxfun/famint-romfs/famint-romfs/rootfs/usr/bin
 
 	
 
