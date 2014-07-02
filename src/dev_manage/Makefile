@@ -40,9 +40,9 @@ OBJECTS			+=	cJSON/cJSON.o
 all:$(APP_BINARY)
 
 disclean:
-	-rm -rf *.o config.log $(APP_BINARY) bin/ share/ include/ lib/ $(SQLITE_NAME)/
+	-rm -rf *.o config.log $(APP_BINARY) cJSON/*.o bin/ share/ include/ lib/ $(SQLITE_NAME)/
 clean:
-	-rm -rf *.o config.log $(APP_BINARY)
+	-rm -rf *.o config.log $(APP_BINARY) cJSON/*.o
 sqlite3:
 	tar xzvf $(SQLITE_NAME).tar.gz ;\
 	cd $(SQLITE_NAME);\
