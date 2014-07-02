@@ -33,4 +33,5 @@ void send_broadcast(const char *who,USER_ACTION user_action,char *dev_name)
 	sprintf(msg,"[{\"who\":\"%s\",\"action\":\"%d\",\"dev_name\":\"%s\"}]",who,(int)(user_action),dev_name);
 	
 	sendto(socket_fd,msg,strlen(msg),0,(struct sockaddr *) &addr, addr_len);
+	close(socket_fd);
 }

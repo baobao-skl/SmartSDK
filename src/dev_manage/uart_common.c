@@ -48,7 +48,7 @@ BOOL ForwardControlToUart(const char *mac,const char *name,DEV_TYPE_INDEX dev_ty
 	BOOL ret = FALSE;
 	if(GetDevIPByMac(mac,ip)==TRUE)
 	{
-		DEBUG_MSG("mac:%s,ip:%s,name=%s,dev_type = %d,dev_cmd = %d\n",mac,ip,name,dev_type,dev_cmd);
+		DEBUG_MSG("mac:%s,ip:%s,name=%s,dev_type = %d,dev_cmd = %d,dev_number=%d\n",mac,ip,name,dev_type,dev_cmd,dev_number);
 		switch(dev_type)
 		{
 			case TYPE_SW_DEV:
@@ -59,6 +59,9 @@ BOOL ForwardControlToUart(const char *mac,const char *name,DEV_TYPE_INDEX dev_ty
 				break;
 			case TYPE_DOOR_DEV:
 				ret = door_dev_control_func(ip,dev_cmd);
+				break;
+			case TYPE_KONGTIAO_DEV:
+				ret = kongtiao_dev_control_func(ip,dev_cmd,dev_number);
 				break;
 			default:
 				break;
@@ -170,6 +173,8 @@ void *uart_thread(void *arg)
 						DEBUG_MSG("%s: %.2X%.2X%.2X%.2X%.2X%.2X\n",__FUNCTION__,cmd[0],cmd[1],cmd[2],cmd[3],cmd[4],cmd[5]);
 						uart_data_queuing(cmd, cmd_list_p[TYPE_SW_DEV].len);
 					}
+					break;
+				case DEV_HONGWAI_REMOTE:
 					break;
 				default:
 					break;

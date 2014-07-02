@@ -25,7 +25,7 @@ static void *user_msg_process(void *arg)
 	if(arg == NULL) 
 		return NULL;
 	message_info_t *msg_info = arg;
-	SMS_ACTION sms_action = SMS_ACTION_NULL;
+	SMS_ACTION sms_action = SMS_ACTION_MAX;
 	char user_msg_decode[100] = {0};
 	char ip[10] = {0};
 	unsigned char devnumber = 0;
@@ -38,10 +38,13 @@ static void *user_msg_process(void *arg)
 	{
 		case CHARSET_7BITS://mainly use to send english
 			if(strlen(msg_info->send_content)>100) return NULL;
-			if(gsmDecode7bit(msg_info->send_content,user_msg_decode,strlen(msg_info->send_content))<0)
+			if(gsmDecode7bit(msg_info->send_content,user_msg_decode,strlen(msg_info->send_content))<0){
+				DEBUG_MSG("gsm info decode error!\n");
 				return NULL;
+			}
+				
 			DEBUG_MSG("user_msg_decode = %s\n",user_msg_decode);
-			if(strspn(user_msg_decode,"0123456789")<strlen(user_msg_decode)){
+			if(strspn(user_msg_decode,"0123456789") < strlen(user_msg_decode)){
 				DEBUG_MSG("Invalid characters contains!!\n");
 				return NULL;
 			}
@@ -52,11 +55,12 @@ static void *user_msg_process(void *arg)
 				substring(user_msg_decode,id,0,strlen(user_msg_decode)-1);
 				DEBUG_MSG("id = %s--\n",id);
 				if(GetIPAndDevNumberByID(id,ip,&devnumber)==FALSE){
+					DEBUG_MSG("get dev index=%s\n", id);
 					return NULL;
 				}
-				DEBUG_MSG("ip = %s--\n",ip);
+				DEBUG_MSG("ip = %s-- devnumber= %d\n",ip, devnumber);
 				sms_action  = (SMS_ACTION)(user_msg_decode[strlen(user_msg_decode)-1] - 0x30 + 1);
-				if(sms_action > SMS_ACTION_MAX -2){
+				if(sms_action > SMS_ACTION_MAX -1){
 					return NULL;
 				}
 				DEBUG_MSG("action = %d--\n",sms_action);

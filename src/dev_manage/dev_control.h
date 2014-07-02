@@ -7,6 +7,7 @@ enum control_cmd switch_dev_get_state(const char *ip,const unsigned char dev_num
 BOOL switch_dev_control_func(const char *ip,const unsigned char dev_cmd,const unsigned char dev_number);
 BOOL chuanglian_dev_control_func(const char *ip,const unsigned char dev_cmd);
 BOOL door_dev_control_func(const char *ip,const unsigned char dev_cmd);
+BOOL kongtiao_dev_control_func(const char *ip,const unsigned char dev_cmd,const unsigned char number);
 
 struct dev_cmd_t{
 	enum type_index index;

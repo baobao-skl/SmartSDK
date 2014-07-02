@@ -44,11 +44,11 @@ int main(int argc,char **argv)
 	
 	//signal(SIGCHLD,SIG_IGN);
 
-	music_head = create_music_song(&lens);
-	if(music_head==NULL){
-		DEBUG_MSG("create music song fail\n");
-		exit(1);
-	}
+	//music_head = create_music_song(&lens);
+	//if(music_head==NULL){
+	//	DEBUG_MSG("create music song fail\n");
+	//	exit(1);
+	//}
 
 	if((shmid = shmget(IPC_PRIVATE,5,PERM))== -1)
 		exit(1);
@@ -67,7 +67,10 @@ int main(int argc,char **argv)
 		exit(1);
 	}
 	
-	setsockopt(socket_server,SOL_SOCKET,SO_REUSEADDR,&on,sizeof(on));
+	if (setsockopt(socket_server, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0) {
+		DEBUG_MSG("setsockopt(SO_REUSEADDR) failed");
+		exit(EXIT_FAILURE);
+	}
 	server_addr.sin_family		=	AF_INET;
 	server_addr.sin_port			=	htons(MYPORT);    //setup the port that server can listen
 	server_addr.sin_addr.s_addr	=	INADDR_ANY;  //setup the IP address
@@ -135,6 +138,12 @@ int main(int argc,char **argv)
 						}else if(strstr(buffer,CHMOD_MUSIC_FOLDER)){
 							ChmodMusicFolder();
 						}else if(strstr(buffer,MUSIC_GET_LIST)){
+							if(music_head != NULL && lens > 0){
+								DEBUG_MSG("[music] not first use!\n");
+								music_destory(music_head,lens);
+							}
+							DEBUG_MSG("re create music list\n");
+							music_head = create_music_song(&lens);
 							memset(music_list, 0, sizeof(music_list));
 							output_all_music_info(music_head,music_list);
 							send(socket_client,music_list,strlen(music_list),0);

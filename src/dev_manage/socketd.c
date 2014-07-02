@@ -27,7 +27,6 @@
 extern char g_timertask_info[1024*4];
 
 extern sms_t sms;
-extern app_status_t app_status;
 
 void *client_thread( void *arg);
 

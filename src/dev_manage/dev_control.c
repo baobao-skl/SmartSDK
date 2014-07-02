@@ -9,9 +9,10 @@ extern uart_t uart;
 
 static struct dev_cmd_t cmd_list[TYPE_INDEX_MAX] = {
 	/*type open close toggle get_state*/
-	{TYPE_SW_DEV,	DEV_SWITCH,		0x01,0x02,0xff,0x03,0x04,	6},
-	{TYPE_CL_DEV,	DEV_CHUANGLIAN,	0x01,0x02,0x03,0xff,0x04,	5},
-	{TYPE_DOOR_DEV,	DEV_DOOR,		0x01,0xff,0xff,0xff,0xff,	5}
+	{TYPE_SW_DEV,		DEV_SWITCH,			0x01,0x02,0xff,0x03,0x04,	6},
+	{TYPE_CL_DEV,		DEV_CHUANGLIAN,		0x01,0x02,0x03,0xff,0x04,	5},
+	{TYPE_DOOR_DEV,		DEV_DOOR,			0x01,0xff,0xff,0xff,0xff,	5},
+	{TYPE_KONGTIAO_DEV, 	DEV_HONGWAI_REMOTE,	0x01,0x02,0x03,0xff,0xff,	6}
 };
 
 struct dev_cmd_t * get_cmd_list(void)
@@ -91,7 +92,7 @@ BOOL switch_dev_control_func(const char *ip,const unsigned char dev_cmd,const un
 
 BOOL chuanglian_dev_control_func(const char *ip,const unsigned char dev_cmd)
 {
-	unsigned char cmd[6] = {0};
+	unsigned char cmd[5] = {0};
 
 	cmd[0] = cmd_list[TYPE_CL_DEV].header;
 
@@ -112,7 +113,7 @@ BOOL chuanglian_dev_control_func(const char *ip,const unsigned char dev_cmd)
 	}
 	
 	DEBUG_MSG("%s: %.2X%.2X%.2X%.2X%.2X\n",__FUNCTION__,cmd[0],cmd[1],cmd[2],cmd[3],cmd[4]);
-	return uart.write(cmd,5);
+	return uart.write(cmd,cmd_list[TYPE_CL_DEV].len);
 }
 
 BOOL door_dev_control_func(const char *ip,const unsigned char dev_cmd)
@@ -132,5 +133,29 @@ BOOL door_dev_control_func(const char *ip,const unsigned char dev_cmd)
 	
 	cmd[4] = 0xFF;
 	DEBUG_MSG("%s: %.2X%.2X%.2X%.2X%.2X\n",__FUNCTION__,cmd[0],cmd[1],cmd[2],cmd[3],cmd[4]);
-	return uart.write(cmd,5);
+	return uart.write(cmd,cmd_list[TYPE_DOOR_DEV].len);
+}
+
+BOOL kongtiao_dev_control_func(const char *ip,const unsigned char dev_cmd,const unsigned char number)
+{
+	unsigned char cmd[6] = {0};
+	unsigned char state[6] = {0};
+	cmd[0] = cmd_list[TYPE_KONGTIAO_DEV].header;
+	get_ip_byte(ip, cmd + 1);
+	if(dev_cmd == CMD_HONGWAI_ADD){
+		cmd[3] = cmd_list[TYPE_KONGTIAO_DEV].open;
+		cmd[5] = 0x10;
+	}else if(dev_cmd == CMD_HONGWAI_DEL){
+		cmd[3] = cmd_list[TYPE_KONGTIAO_DEV].close;
+		cmd[5] = 0x20;
+	}else if(dev_cmd == CMD_HONGWAI_SEND){
+		cmd[3] = cmd_list[TYPE_KONGTIAO_DEV].pause;
+		cmd[5]  = 0x30;
+	}
+	cmd[4] = number;
+	DEBUG_MSG("%s: %.2X%.2X%.2X%.2X%.2X%.2X\n",__FUNCTION__,cmd[0],cmd[1],cmd[2],cmd[3],cmd[4],cmd[5]);
+	if (uart.write(cmd,cmd_list[TYPE_KONGTIAO_DEV].len)==FALSE)
+		return FALSE;
+	return TRUE;
+	//return uart_check_from_queue(cmd,6,state,6);
 }

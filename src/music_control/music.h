@@ -6,7 +6,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
-#define DEBUG 0
+#define DEBUG 1
 #define DEBUG_MSG if(DEBUG)printf
 
 #define MUSIC_FOLDER "/usr/ftp/music"

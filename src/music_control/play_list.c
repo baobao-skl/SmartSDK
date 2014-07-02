@@ -41,7 +41,7 @@ music_list_item_t *create_music_song(int *len)
 
 	DIR *dir = NULL;
 	struct dirent *file_t = NULL;
-		
+	*len = 0;
 	dir = opendir(MUSIC_FOLDER);
 	while((file_t = readdir(dir)) != NULL){
 		if(strcmp(file_t->d_name,".")==0 || strcmp(file_t->d_name,"..")==0)

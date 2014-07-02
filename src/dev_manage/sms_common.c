@@ -9,7 +9,7 @@
 extern sms_t sms;
 
 message_info_t g_rcv_info;
-extern app_status_t app_status;
+
 
 char buffer[MAX_BUFFER_SIZE]={0};
 char command[MAX_BUFFER_SIZE] ={0};

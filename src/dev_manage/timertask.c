@@ -10,8 +10,6 @@
 #include "uart_common.h"
 #include "dev_control.h"
 
-extern app_status_t app_status ;
-
 static void do_timer(void);
 static void *do_timer_func(void *arg);
 

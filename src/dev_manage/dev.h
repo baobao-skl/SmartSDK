@@ -23,6 +23,8 @@ typedef struct{
 	char CurrentTime[20];
 }app_status_t;
 
+extern app_status_t app_status;
+
 typedef struct{
 	char alarm_name[512];
 	char alarm_value[512];
@@ -57,6 +59,9 @@ enum control_cmd{
 	CMD_DOOR_OPEN,
 	CMD_DOOR_CLOSE,
 	CMD_DOOR_GET_STATE,
+	CMD_HONGWAI_ADD,
+	CMD_HONGWAI_DEL,
+	CMD_HONGWAI_SEND,
 	CMD_NULL
 };
 
@@ -64,6 +69,7 @@ typedef enum type_index{
 	TYPE_SW_DEV=0,
 	TYPE_CL_DEV,
 	TYPE_DOOR_DEV,
+	TYPE_KONGTIAO_DEV,
 	TYPE_WENSHIDU_DEV,
 	TYPE_SOUND_DEV,
 	TYPE_HONGWAI_DEV,
@@ -78,11 +84,13 @@ typedef enum{
 	DEV_SWITCH= 0x02,
 	DEV_CHUANGLIAN = 0x03,
 	DEV_DOOR = 0x04,
-	DEV_WENSHIDU = 0x06,
-	DEV_SOUND = 0x07,
-	DEV_HONGWAI = 0x08,
-	DEV_YANWU = 0x09,
-	DEV_YUDI = 0x05,
+	DEV_HONGWAI_REMOTE = 0x05,
+	DEV_YUDI = 0x06,
+	DEV_WENSHIDU = 0x07,
+	DEV_SOUND = 0x08,
+	DEV_HONGWAI = 0x09,
+	DEV_YANWU = 0x10,
+	
 }DEV_TYPE_LIST;
 
 typedef enum{
