@@ -38,19 +38,20 @@ void *send_mail_thread(void *arg)
 	char ip[24] = {0};
 	GetEmailList();
 	char *email_list = get_email_list();
-	if(strcmp(email_list,"_NULL_")==0)
+	if (strcmp(email_list,"_NULL_") == 0) {
 		return NULL;//no email receiver
+	}
 
 	//test network is OK!!
-	if(GetIPByDomainName("www.baidu.com",ip)==FALSE){
+	if (GetIPByDomainName("www.baidu.com", ip)==FALSE) {
 		DEBUG_MSG("network is not ok now!\n");
 		return NULL;
 	}
 	
 	//if use 126 send fail,we will use QQ to send Email;
-	if(SendMail(email_list, body,SERVER_QQ)==FALSE){
-		if(SendMail(email_list, body,SERVER_126)==FALSE){
-			SendMail(email_list, body,SERVER_SOHU);
+	if (SendMail(email_list, body, SERVER_QQ) == FALSE) {
+		if(SendMail(email_list, body, SERVER_126) == FALSE) {
+			SendMail(email_list, body, SERVER_SOHU);
 		}
 	}
 	return NULL;

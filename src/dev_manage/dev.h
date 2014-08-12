@@ -21,6 +21,7 @@ typedef struct{
 	BOOL is_uart_ok;
 	BOOL isTimerTaskRun;
 	char CurrentTime[20];
+	BOOL isHasTimerTasks;
 }app_status_t;
 
 extern app_status_t app_status;
@@ -70,6 +71,7 @@ typedef enum type_index{
 	TYPE_CL_DEV,
 	TYPE_DOOR_DEV,
 	TYPE_KONGTIAO_DEV,
+	TYPE_TV_DEV,
 	TYPE_WENSHIDU_DEV,
 	TYPE_SOUND_DEV,
 	TYPE_HONGWAI_DEV,
@@ -117,6 +119,7 @@ typedef enum{
 	ACTION_DELETE_TIMERTASK,
 	ACTION_GET_TIMERTASK_INFO,
 	ACTION_SW_GET_STATE,
+	ACTION_QUIT,
 	ACTION_MAX
 }USER_ACTION;
 

@@ -14,6 +14,7 @@ typedef struct{
 	unsigned int tipinfo; // (tipinfo&0xff)=tipway tipinfo&(0xFF00)=tiptime
 	unsigned int howlong;
 	unsigned char devnumber;
+	char create_time[20];
 }timertask_item_t;
 
 BOOL AddOneTimerTask(timertask_item_t item);

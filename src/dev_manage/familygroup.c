@@ -26,12 +26,12 @@ BOOL SaveFamilyGroupInfo(const groupInfo_t group_info)
 BOOL GetFamilyGroupInfo(groupInfo_t *group_info)
 {
 	FILE *fid = fopen(GROUP_INFO_STORE_PATH,"r");
-	if(fid==NULL) return FALSE;
+	if (fid==NULL) return FALSE;
 	char *line = NULL;
 	size_t len;
 	size_t size;
 	size = getline(&line,&len,fid);
-	if(size==-1)
+	if (size==-1)
 		goto fail;
 	
 	strncpy(group_info->group_id,line,strlen(line));

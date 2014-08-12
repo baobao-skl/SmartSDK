@@ -63,6 +63,9 @@ BOOL ForwardControlToUart(const char *mac,const char *name,DEV_TYPE_INDEX dev_ty
 			case TYPE_KONGTIAO_DEV:
 				ret = kongtiao_dev_control_func(ip,dev_cmd,dev_number);
 				break;
+			case TYPE_TV_DEV:
+				ret = tv_dev_control_func(ip,dev_cmd,dev_number);
+				break;
 			default:
 				break;
 		}

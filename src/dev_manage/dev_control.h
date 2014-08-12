@@ -8,6 +8,7 @@ BOOL switch_dev_control_func(const char *ip,const unsigned char dev_cmd,const un
 BOOL chuanglian_dev_control_func(const char *ip,const unsigned char dev_cmd);
 BOOL door_dev_control_func(const char *ip,const unsigned char dev_cmd);
 BOOL kongtiao_dev_control_func(const char *ip,const unsigned char dev_cmd,const unsigned char number);
+BOOL tv_dev_control_func(const char *ip,const unsigned char dev_cmd,const unsigned char number);
 
 struct dev_cmd_t{
 	enum type_index index;

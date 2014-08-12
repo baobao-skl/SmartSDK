@@ -21,15 +21,13 @@ int read_length = 0;
 typedef void (*handler)(void);
 void *sms_read_thread(void *arg)
 {
-	if(arg==NULL) 
+	if (arg == NULL) {
 		return NULL;
+	}
 	handler h = (handler)arg;
-	while(TRUE)
-	{
-		if((read_length=read(sms.fd,buffer,sizeof(buffer)))>0)
-		{
-			if(strstr(buffer,"0891"))
-			{
+	while (TRUE) {
+		if ((read_length=read(sms.fd,buffer,sizeof(buffer)))>0) {
+			if (strstr(buffer,"0891")) {
 				memset(&g_rcv_info,0,sizeof(&g_rcv_info));
 				// 1. get the messgae info
 				g_rcv_info = handler_receive_msg(strstr(buffer,"0891"));
@@ -40,9 +38,7 @@ void *sms_read_thread(void *arg)
 				sprintf(buffer,"AT+CMGD=%s\r",rcv_msg_sim_index);
 				write(sms.fd,buffer,strlen(buffer));
 				h();//to handler user message . wait next handler and dev control
-			}
-			else if(strstr(buffer,"CMTI:"))//new message is coming
-			{
+			} else if (strstr(buffer,"CMTI:")) {//new message is coming
 				memset(command,0,sizeof(command));
 				strcpy(command,buffer);
 				strtok(command,",");				
@@ -65,20 +61,20 @@ void *send_msg_thread(void *arg)
 	char tempMobile[12] = {0};
 	alarm_t alarm;
 	memset(&alarm,0,sizeof(&alarm));
-	if(app_status.is_sms_ok==FALSE) return NULL;
-	if(arg == NULL) return NULL;
+	if (app_status.is_sms_ok==FALSE) return NULL;
+	if (arg == NULL) return NULL;
 	strcpy((char *)&alarm,arg);
 	sprintf(content,"%s%s",alarm.alarm_unicode_name,alarm.alarm_unicode_value);
 	GetMobileList();
-	if(strcmp(get_mobile_list(),"_NULL_")==0) return NULL;
+	if (strcmp(get_mobile_list(),"_NULL_") == 0) return NULL;
 	sprintf(temp,"%s",get_mobile_list());
 	mobile = strtok(temp,",");
-	while(mobile!=NULL){
+	while (mobile!=NULL) {
 		DEBUG_MSG("%s\n",mobile);
 		strcpy(tempMobile,mobile);
 		sms.send(tempMobile,content);
 		mobile = strtok(NULL,",");
-		if(mobile==NULL) break;
+		if (mobile == NULL) break;
 		sleep(2);
 	}
 	return NULL;
@@ -107,3 +103,4 @@ static void *InformUserByMobileAndEmailFunc(void *arg)
 	return NULL;
 }
 #endif
+

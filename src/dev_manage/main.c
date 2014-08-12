@@ -22,11 +22,12 @@ void app_init(void)
 	unsigned char weekday = 0;
 	led_control(LED_FOR_PROGRAM_RUN, ON);
 	app_status.isTimerTaskRun = TRUE;
+	app_status.isHasTimerTasks = TRUE;
 	app_status.is_uart_ok = uart.init();
 	app_status.is_sms_ok = sms.init();
 
-	GetCurrentTime(app_status.CurrentTime,&weekday);
-	DEBUG_MSG("current-time: %s week:%d\n",app_status.CurrentTime,weekday);
+	GetCurrentTime(app_status.CurrentTime, &weekday);
+	DEBUG_MSG("current-time: %s week:%d\n", app_status.CurrentTime, weekday);
 
 	signal(SIGPIPE, SIG_IGN);//ingnore sigpipe signal
 }

@@ -17,7 +17,9 @@ void *TimerTaskRun(void *arg)
 {
 	while(app_status.isTimerTaskRun)
 	{
-		do_timer();
+		if (app_status.isHasTimerTasks) {//this is a flag that has timer tasks
+			do_timer();
+		}
 		// 4. wait
 		usleep(TIMER_TIME*1000000*2);
 	}
@@ -42,22 +44,9 @@ static void *do_timer_func(void *arg)
 	// 2. Read database
 	GetValidThingsToDo(app_status.CurrentTime,weekday,&nums,items);
 	// 3. if timer is right, execute its task;
-	if(nums>0)
-	{
-		for(i = 0;i< nums; i++)
-		{
-			ForwardControlToUart(items[i].dev_mac,items[i].dev_name,DEV_SWITCH,items[i].action,items[i].devnumber);
-			if(items[i].howlong > 0)
-			{
-				TimeAdd(app_status.CurrentTime,items[i].howlong/100, items[i].howlong%100, items[i].happen_time);
-				if(items[i].action == CMD_SW_OPEN){
-					items[i].action = CMD_SW_CLOSE;
-				}else{
-					items[i].action = CMD_SW_OPEN;
-				}
-				items[i].howlong = 0;//avoid repeat
-				AddOneTimerTask(items[i]);
-			}
+	if (nums > 0) {
+		for (i = 0;i < nums; i++) {		
+			ForwardControlToUart(items[i].dev_mac,items[i].dev_name,TYPE_SW_DEV,items[i].action,items[i].devnumber);
 		}
 	}
 	return NULL;
@@ -78,15 +67,17 @@ void GetCurrentTime(char *current_time,unsigned char *weekday)
 						//timePassed->tm_sec
 	);
 	*weekday = (unsigned char)(timePassed->tm_wday);
-	if(*weekday == 0) *weekday = 7;//weekend 7
+	if (*weekday == 0) {
+		*weekday = 7;//weekend 7
+	}
 }
 
-void TimeAdd(char *pre_happen_tieme, int hour,int minutes,char *aftertime)
+void TimeAdd(char *pre_happen_time, int hour,int minutes,char *aftertime)
 {
 	struct tm pre_time_tm,*after_time_tm=NULL;
 	time_t time1 = {0};
 	char pre_time[20] = {0};
-	strcpy(pre_time,pre_happen_tieme);
+	strcpy(pre_time,pre_happen_time);
 	DEBUG_MSG("pretime = %s\n",pre_time);
 	char *pre1 = strtok(pre_time," ");
 	char *pre2 = strtok(NULL," ");
